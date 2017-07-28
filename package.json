@@ -1,0 +1,41 @@
+{
+  "name": "ilp-lightning-demo",
+  "version": "1.0.0",
+  "description": "Demo to send payments between the Bitcoin and Litecoin Lightning Networks using Interledger",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/interledgerjs/ilp-lightning-demo.git"
+  },
+  "keywords": [
+    "lightning",
+    "lightning",
+    "network",
+    "lnd",
+    "bitcoin",
+    "litecoin",
+    "interledger",
+    "ilp"
+  ],
+  "author": "Evan Schwartz <evan@ripple.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/interledgerjs/ilp-lightning-demo/issues"
+  },
+  "homepage": "https://github.com/interledgerjs/ilp-lightning-demo#readme",
+  "dependencies": {
+    "connector-rpc": "git+https://github.com/interledgerjs/connector-rpc.git#e82bb90a63e31c368a995aaa0900bba1f7c20184",
+    "grpc": "^1.4.1",
+    "ilp": "^11.2.1",
+    "ilp-plugin-lightning": "~0.2.0",
+    "ilp-plugin-shared": "git+https://github.com/interledgerjs/ilp-plugin-shared.git#4576bcd63283006b3892e19f0fc9616e739adf26",
+    "koa": "^2.3.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-router": "^7.2.1",
+    "sqlite3": "^3.1.8",
+    "uuid": "^3.1.0"
+  }
+}
