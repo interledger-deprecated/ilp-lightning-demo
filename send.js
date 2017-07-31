@@ -12,8 +12,11 @@ const litecoin1 = process.env.LITECOIN_LND_1 || 'localhost:11010'
 const litecoin2 = process.env.LITECOIN_LND_2 || 'localhost:12010'
 
 async function main () {
+  console.log('Getting info from lnd nodes')
   const connectorPubkeys = await util.getPubkeys([bitcoin2, litecoin2])
+  console.log('Configuring plugins')
 
+  // Configure the plugins
   const sender = new LightningPlugin({
     peerPublicKey: connectorPubkeys[0],
     lndUri: bitcoin1,
@@ -36,14 +39,18 @@ async function main () {
   util.rpcify(sender, 9001)
   util.rpcify(receiver, 9002)
 
+  // This test script uses the Interledger Payment Request
+  // transport layer protocol. For details about this protocol see:
+  // https://github.com/interledger/rfcs/blob/master/0011-interledger-payment-request/0011-interledger-payment-request.md
+
+  // Set up the receiver to automatically fulfill incoming payments
+  // corresponding to IPRs it generated
   const stopListening = await ILP.IPR.listen(receiver, {
     receiverSecret: Buffer.from('secret', 'utf8')
   }, async function ({ transfer, fulfill }) {
-    console.log('got transfer:', transfer)
-
-    console.log('claiming incoming funds...')
+    console.log('Receiver got notification of prepared transfer:', transfer)
     await fulfill()
-    console.log('funds received!')
+    console.log('Receiver executed incoming transfer')
   })
 
   // `ipr` is a buffer with the encoded IPR
@@ -53,16 +60,18 @@ async function main () {
     // denominated in the ledger's base unit
     destinationAmount: '10',
   })
+  console.log('Receiver created Interledger Payment Request')
 
-  // Note the user of this module must implement the method for communicating
-  // packet and condition from the recipient to the sender.
-
-  // In practice, The rest of this example would happen on the sender's side.
-
+  // Normally the developer using IPR would be responsible for
+  // communicating the ipr from the receiver to the sender.
+  // In this case we're just sending it in process
   const { packet, condition } = ILP.IPR.decodeIPR(ipr)
-  const quote = await ILP.ILQP.quoteByPacket(sender, packet)
-  console.log('got quote:', quote)
 
+  // The sender gets a quote to determine the amount they need to pay
+  const quote = await ILP.ILQP.quoteByPacket(sender, packet)
+  console.log('Sender got quote for payment request:', quote)
+
+  // (Should be obvious what this step does)
   await sender.sendTransfer({
     id: uuid(),
     to: quote.connectorAccount,
@@ -71,9 +80,12 @@ async function main () {
     executionCondition: condition,
     ilp: packet
   })
+  console.log('Sender sent transfer')
 
+  // This event tells the sender the transfer was executed
+  // and gives them the fulfillment, or cryptographic proof
   sender.on('outgoing_fulfill', (transfer, fulfillment) => {
-    console.log(transfer.id, 'was fulfilled with', fulfillment)
+    console.log('Sender got notification that the transfer was exected')
   })
 }
 

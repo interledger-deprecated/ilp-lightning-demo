@@ -8,14 +8,8 @@ const litecoin1 = process.env.LITECOIN_LND_1 || 'localhost:11010'
 const litecoin2 = process.env.LITECOIN_LND_2 || 'localhost:12010'
 
 async function main () {
+  console.log('Getting configuration details from lnds')
   const pubkeys = await util.getPubkeys([bitcoin1, litecoin1])
-
-  // Set up environment variables
-  process.env.CONNECTOR_PORT='9000'
-  process.env.CONNECTOR_MAX_HOLD_TIME='1000'
-  process.env.CONNECTOR_BACKEND='fixerio-plus-coinmarketcap'
-  process.env.CONNECTOR_FX_SPREAD='0'
-  process.env.DB_URI='sqlite://:memory:'
 
   // Plugin configuration
   process.env.CONNECTOR_LEDGERS=`
@@ -48,7 +42,15 @@ async function main () {
     }
   }`
 
+  // Set up environment variables
+  process.env.CONNECTOR_PORT='9000'
+  process.env.CONNECTOR_MAX_HOLD_TIME='1000'
+  process.env.CONNECTOR_BACKEND='fixerio-plus-coinmarketcap'
+  process.env.CONNECTOR_FX_SPREAD='0'
+  process.env.DB_URI='sqlite://:memory:'
+
   // Runs the connector using the lightning plugins
+  console.log('Running connector using lightning plugins\n\n')
   require('connector-rpc')
 }
 
