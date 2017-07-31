@@ -14,15 +14,21 @@ This demo sends payments between instances of the [Lightning Network](https://li
 
 _You can skip this step if you already have 2 lightning nodes setup on the Bitcoin Lightning Network and 2 on the Litecoin Lightning Network._
 
-The following uses BitFury's [`simple-simnet`](https://github.com/BitfuryLightning/simple-simnet) to run local testnets and Lightning daemonsfor both Bitcoin and Litecoin.
+The following uses BitFury's [`simple-simnet`](https://github.com/BitfuryLightning/simple-simnet) to run local testnets and Lightning daemons for both Bitcoin and Litecoin.
+
+Let's begin with starting the Bitcoin testnet.
 
 ```sh
 git clone https://github.com/BitfuryLightning/simple-simnet
-cd simple-simnet
-./bitcoin/build.sh
-./litcoin/build.sh
-./bitcoin/start.sh &
-./litecoin/start.sh &
+cd simple-simnet/bitcoin
+build.sh && start.sh
+```
+
+Now let's start the Litecoin testnet. Open a new terminal window and switch into folder `simple-simnet` created in the previous step. Then, run the following commands:
+
+```sh
+cd <your-simple-simnet-folder>/litecoin
+build.sh && start.sh
 ```
 
 ### 1. Run an Interledger Connector
