@@ -1,9 +1,7 @@
 # BTC -> LTC Lightning Demo
 > Send payments between Lightning Networks using Interledger
 
-Interledger is a protocol for sending payments across different types of payment networks.
-
-This demo uses an Interledger Connector and the Lightning Network Ledger Plugin to send payments between instances of the Lightning Network on Bitcoin and Litecoin.
+This demo sends payments between instances of the [Lightning Network](https://lightning.network) on Bitcoin and Litecoin using an [Interledger Connector](https://github.com/interledgerjs/ilp-connector) and the [Lightning Ledger Plugin](https://github.com/interledgerjs/ilp-plugin-lightning).
 
 ## Prerequisites
 
@@ -12,10 +10,11 @@ This demo uses an Interledger Connector and the Lightning Network Ledger Plugin 
 
 ## Running the Demo
 
-### 1. Set Up Lightning Networks
+### 0. Set Up Lightning Networks
 
-_You can skip this step if you already have 2 `lnd`s setup on the Bitcoin Lightning Network and 2 on the Litecoin Lightning Network._
+_You can skip this step if you already have 2 lightning nodes setup on the Bitcoin Lightning Network and 2 on the Litecoin Lightning Network._
 
+The following uses BitFury's [`simple-simnet`](https://github.com/BitfuryLightning/simple-simnet) to run local testnets and Lightning daemonsfor both Bitcoin and Litecoin.
 
 ```sh
 git clone https://github.com/BitfuryLightning/simple-simnet
@@ -26,17 +25,22 @@ cd simple-simnet
 ./litecoin/start.sh &
 ```
 
-### 2. Run an Interledger Connector
+### 1. Run an Interledger Connector
 
-From this directory:
+This will run a connector and automatically configure it to connect to the `lnd` nodes started in the previous step.
 
 ```sh
+git clone https://github.com/interledgerjs/ilp-lightning-demo
+cd ilp-lightning-demo
+npm install
 node run-connector.js
 ```
 
-The connector will automatically connect to the simnet `lnd`s started in the instructions above. To configure it to connect to other `lnd`s, set the environment variables `BITCOIN_LND_1`, `BITCOIN_LND_2`, `LITECOIN_LND_1`, `LITECOIN_LND_2`.
+To configure the connector to use different `lnd` nodes, set the environment variables `BITCOIN_LND_1`, `BITCOIN_LND_2`, `LITECOIN_LND_1`, `LITECOIN_LND_2` to those `lnd` nodes' RPC endpoints.
 
-### 3. Send a Payment
+### 2. Send a Payment
+
+From another terminal run the following to send a payment from one of the Bitcoin `lnd` nodes to a Litecoin `lnd` node.
 
 ```sh
 node send.js
@@ -46,6 +50,10 @@ node send.js
 
 ## How it Works
 
-Connectors [ledger plugins](https://github.com/interledger/rfcs/blob/master/0004-ledger-plugin-interface/0004-ledger-plugin-interface.md) to connect to different types of ledgers. A simple packet format instructs connectors where to forward payments. [Hashed-Timelock _Agreements_ (HTLAs)](https://github.com/interledger/rfcs/blob/master/0022-hashed-timelock-agreements/0022-hashed-timelock-agreements.md), a generalization of HTLCs, are used to secure Interledger payments.
+Interledger is a protocol for connecting payment networks or _ledgers_.
 
-For more information on Interledger, see [interledger.org](https://interledger.org) or the [Interledger RFCs](https://github.com/interledger/rfcs/0001-interledger-architecture/0001-interledger-architecture.md) for the protocol specs.
+_Connectors_ use [ledger plugins](https://interledger.org/rfcs/0004-ledger-plugin-interface/) to connect to different types of ledgers. This demo uses [`ilp-plugin-lightning`](https://github.com/interledgerjs/ilp-plugin-lightning) to send payments through instances of the Lightning Network.
+
+The [Interledger packet](https://interledger.org/rfcs/0003-interledger-protocol/) is attached to transfers across individual ledgers and instructs connectors where to forward payments. [Hashed-Timelock _Agreements_ (HTLAs)](https://github.com/interledger/rfcs/blob/master/0022-hashed-timelock-agreements/0022-hashed-timelock-agreements.md), a generalization of HTLCs, are used to secure Interledger payments.
+
+For more information on Interledger, see [interledger.org](https://interledger.org) or the [Interledger RFCs](https://github.com/interledger/rfcs) for the protocol specs.
