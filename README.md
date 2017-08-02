@@ -14,7 +14,7 @@ This demo sends payments between instances of the [Lightning Network](https://li
 
 _You can skip this step if you already have 2 lightning nodes setup on the Bitcoin Lightning Network and 2 on the Litecoin Lightning Network._
 
-The following uses BitFury's [`simple-simnet`](https://github.com/BitfuryLightning/simple-simnet) to run local testnets and Lightning daemonsfor both Bitcoin and Litecoin.
+The following uses BitFury's [`simple-simnet`](https://github.com/BitfuryLightning/simple-simnet) to run local testnets and Lightning daemons for both Bitcoin and Litecoin.
 
 In one terminal run:
 ```sh
