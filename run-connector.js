@@ -50,7 +50,7 @@ async function main () {
   process.env.DB_URI='sqlite://:memory:'
 
   // Runs the connector using the lightning plugins
-  console.log('Running connector using lightning plugins\n\n')
+  console.log('Running connector using lightning plugins...')
   require('connector-rpc')
 }
 

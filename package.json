@@ -30,7 +30,7 @@
     "connector-rpc": "git+https://github.com/interledgerjs/connector-rpc.git#e82bb90a63e31c368a995aaa0900bba1f7c20184",
     "grpc": "^1.4.1",
     "ilp": "^11.2.1",
-    "ilp-plugin-lightning": "~0.2.0",
+    "ilp-plugin-lightning": "~0.3.0",
     "ilp-plugin-shared": "git+https://github.com/interledgerjs/ilp-plugin-shared.git#4576bcd63283006b3892e19f0fc9616e739adf26",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",

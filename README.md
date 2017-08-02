@@ -16,19 +16,26 @@ _You can skip this step if you already have 2 lightning nodes setup on the Bitco
 
 The following uses BitFury's [`simple-simnet`](https://github.com/BitfuryLightning/simple-simnet) to run local testnets and Lightning daemonsfor both Bitcoin and Litecoin.
 
+In one terminal run:
 ```sh
 git clone https://github.com/BitfuryLightning/simple-simnet
 cd simple-simnet
 ./bitcoin/build.sh
-./litcoin/build.sh
-./bitcoin/start.sh &
-./litecoin/start.sh &
+./bitcoin/start.sh
+```
+
+In another terminal run:
+```sh
+cd simple-simnet
+./litecoin/build.sh
+./litecoin/start.sh
 ```
 
 ### 1. Run an Interledger Connector
 
 This will run a connector and automatically configure it to connect to the `lnd` nodes started in the previous step.
 
+In a new terminal run:
 ```sh
 git clone https://github.com/interledgerjs/ilp-lightning-demo
 cd ilp-lightning-demo
